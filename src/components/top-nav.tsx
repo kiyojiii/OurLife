@@ -1,8 +1,16 @@
 import Link from "next/link"
+import { Menu } from "lucide-react"
 
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 
 export async function TopNav() {
   const supabase = await createSupabaseServerClient()
@@ -18,7 +26,7 @@ export async function TopNav() {
         </Link>
 
         {email ? (
-          <nav className="hidden items-center gap-4 text-sm text-muted-foreground sm:flex">
+          <nav className="hidden items-center gap-4 text-sm text-muted-foreground md:flex">
             <Link href="/dashboard" className="hover:text-foreground">
               Dashboard
             </Link>
@@ -35,6 +43,39 @@ export async function TopNav() {
         ) : null}
 
         <div className="ml-auto flex items-center gap-2">
+          {email ? (
+            <Sheet>
+              <SheetTrigger
+                className={buttonVariants({
+                  variant: "ghost",
+                  size: "icon",
+                  className: "md:hidden",
+                })}
+                aria-label="Open menu"
+              >
+                <Menu className="h-4 w-4" />
+              </SheetTrigger>
+              <SheetContent side="left">
+                <SheetHeader>
+                  <SheetTitle>OurLife</SheetTitle>
+                </SheetHeader>
+                <nav className="mt-6 grid gap-2 text-sm">
+                  <Link className="py-2" href="/dashboard">
+                    Dashboard
+                  </Link>
+                  <Link className="py-2" href="/budget">
+                    Budget
+                  </Link>
+                  <Link className="py-2" href="/hobbies">
+                    Hobbies
+                  </Link>
+                  <Link className="py-2" href="/journal">
+                    Journal
+                  </Link>
+                </nav>
+              </SheetContent>
+            </Sheet>
+          ) : null}
           <ThemeToggle />
           {email ? (
             <>

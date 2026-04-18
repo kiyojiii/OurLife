@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+OurLife is a personal tracker web app for couples (budget, hobbies, daily journal).
 
-## Getting Started
+## Tech
 
-First, run the development server:
+- Next.js (App Router) + TypeScript
+- Tailwind CSS + shadcn/ui
+- Supabase Auth + Postgres
+- Dark mode via `next-themes`
+
+## Prerequisites
+
+- Node.js LTS
+- npm
+- A Supabase project
+
+## Setup
+
+Create `.env.local` in the repo root:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL="https://YOUR_PROJECT_REF.supabase.co"
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="YOUR_SUPABASE_PUBLISHABLE_KEY"
+```
+
+In Supabase Dashboard:
+
+- Authentication → URL Configuration
+  - Site URL: `http://localhost:3000`
+  - Redirect URLs: add `http://localhost:3000/auth/callback`
+
+## Run locally
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Routes (Phase 1)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `/login`, `/signup`
+- Protected: `/dashboard`, `/budget`, `/hobbies`, `/journal`
 
-## Learn More
+## Notes
 
-To learn more about Next.js, take a look at the following resources:
+- This repo intentionally ignores `.env.local` (see `.gitignore`).
+- For local dev on a different port (e.g. `3001`), add that port to Supabase Redirect URLs too.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

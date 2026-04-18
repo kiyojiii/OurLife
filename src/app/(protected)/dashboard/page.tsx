@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { BookOpenText, PiggyBank, Sparkles } from "lucide-react"
 
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 import {
@@ -28,28 +29,43 @@ export default async function DashboardPage() {
         <Link href="/budget" className="block">
           <Card className="transition-colors hover:bg-muted/40">
             <CardHeader>
-              <CardTitle>Budget</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <PiggyBank className="h-4 w-4" />
+                Budget
+              </CardTitle>
               <CardDescription>Coming soon</CardDescription>
             </CardHeader>
-            <CardContent />
+            <CardContent className="text-sm text-muted-foreground">
+              Track shared spending, categories, and monthly targets.
+            </CardContent>
           </Card>
         </Link>
         <Link href="/hobbies" className="block">
           <Card className="transition-colors hover:bg-muted/40">
             <CardHeader>
-              <CardTitle>Hobbies</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4" />
+                Hobbies
+              </CardTitle>
               <CardDescription>Coming soon</CardDescription>
             </CardHeader>
-            <CardContent />
+            <CardContent className="text-sm text-muted-foreground">
+              Keep streaks and plan time for what you both enjoy.
+            </CardContent>
           </Card>
         </Link>
         <Link href="/journal" className="block">
           <Card className="transition-colors hover:bg-muted/40">
             <CardHeader>
-              <CardTitle>Journal</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpenText className="h-4 w-4" />
+                Journal
+              </CardTitle>
               <CardDescription>Coming soon</CardDescription>
             </CardHeader>
-            <CardContent />
+            <CardContent className="text-sm text-muted-foreground">
+              Write daily entries and reflect together.
+            </CardContent>
           </Card>
         </Link>
       </div>

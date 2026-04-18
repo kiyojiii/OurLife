@@ -17,20 +17,22 @@ export async function TopNav() {
           OurLife
         </Link>
 
-        <nav className="hidden items-center gap-4 text-sm text-muted-foreground sm:flex">
-          <Link href="/dashboard" className="hover:text-foreground">
-            Dashboard
-          </Link>
-          <Link href="/budget" className="hover:text-foreground">
-            Budget
-          </Link>
-          <Link href="/hobbies" className="hover:text-foreground">
-            Hobbies
-          </Link>
-          <Link href="/journal" className="hover:text-foreground">
-            Journal
-          </Link>
-        </nav>
+        {email ? (
+          <nav className="hidden items-center gap-4 text-sm text-muted-foreground sm:flex">
+            <Link href="/dashboard" className="hover:text-foreground">
+              Dashboard
+            </Link>
+            <Link href="/budget" className="hover:text-foreground">
+              Budget
+            </Link>
+            <Link href="/hobbies" className="hover:text-foreground">
+              Hobbies
+            </Link>
+            <Link href="/journal" className="hover:text-foreground">
+              Journal
+            </Link>
+          </nav>
+        ) : null}
 
         <div className="ml-auto flex items-center gap-2">
           <ThemeToggle />

@@ -1,7 +1,8 @@
 import Link from "next/link"
-import { Menu } from "lucide-react"
+import { Menu, Settings } from "lucide-react"
 
-import { createSupabaseServerClient } from "@/lib/supabase/server"
+import { getHouseholdContext } from "@/lib/household"
+import { firstNameFromEmail } from "@/lib/names"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import {
@@ -13,19 +14,25 @@ import {
 } from "@/components/ui/sheet"
 
 export async function TopNav() {
-  const supabase = await createSupabaseServerClient()
-  const { data } = await supabase.auth.getUser().catch(() => ({ data: { user: null } }))
+  const ctx = await getHouseholdContext()
 
-  const email = data.user?.email ?? null
+  const email = ctx.user?.email ?? null
+  const householdId = ctx.householdId
+  const showAppNav = Boolean(email && householdId)
+  const displayName =
+    ctx.displayName?.trim() || firstNameFromEmail(email) || email
 
   return (
     <header className="border-b">
       <div className="mx-auto flex h-14 max-w-5xl items-center gap-4 px-4">
-        <Link href={email ? "/dashboard" : "/"} className="font-semibold">
+        <Link
+          href={showAppNav ? "/dashboard" : email ? "/onboarding" : "/"}
+          className="font-semibold"
+        >
           OurLife
         </Link>
 
-        {email ? (
+        {showAppNav ? (
           <nav className="hidden items-center gap-4 text-sm text-muted-foreground md:flex">
             <Link href="/dashboard" className="hover:text-foreground">
               Dashboard
@@ -41,9 +48,17 @@ export async function TopNav() {
             </Link>
           </nav>
         ) : null}
+        {email && !householdId ? (
+          <Link
+            href="/onboarding"
+            className="hidden text-sm font-medium text-primary underline-offset-4 hover:underline md:inline"
+          >
+            Finish setup
+          </Link>
+        ) : null}
 
         <div className="ml-auto flex items-center gap-2">
-          {email ? (
+          {showAppNav ? (
             <Sheet>
               <SheetTrigger
                 className={buttonVariants({
@@ -72,15 +87,43 @@ export async function TopNav() {
                   <Link className="py-2" href="/journal">
                     Journal
                   </Link>
+                  <Link className="py-2" href="/settings">
+                    Settings
+                  </Link>
                 </nav>
               </SheetContent>
             </Sheet>
           ) : null}
+          {email && !householdId ? (
+            <Link
+              href="/onboarding"
+              className={`${buttonVariants({ variant: "outline", size: "sm" })} md:hidden`}
+            >
+              Setup
+            </Link>
+          ) : null}
           <ThemeToggle />
           {email ? (
             <>
-              <span className="hidden text-sm text-muted-foreground sm:inline">
-                {email}
+              {showAppNav ? (
+                <Link
+                  href="/settings"
+                  className={buttonVariants({
+                    variant: "ghost",
+                    size: "icon",
+                    className: "hidden md:inline-flex",
+                  })}
+                  aria-label="Settings"
+                  title="Settings"
+                >
+                  <Settings className="h-4 w-4" />
+                </Link>
+              ) : null}
+              <span
+                className="hidden max-w-[180px] truncate text-sm text-muted-foreground sm:inline"
+                title={email}
+              >
+                {displayName}
               </span>
               <form action="/auth/signout" method="post">
                 <Button variant="outline" size="sm" type="submit">
@@ -106,4 +149,3 @@ export async function TopNav() {
     </header>
   )
 }
-
